@@ -1,12 +1,12 @@
 // const game = {}
 const squares = []
 let shapeIndex
+const width = 10
+const height = 20
 
 
 function createGameBoard() {
   const grid = document.querySelector('.grid')
-  const width = 10
-  const height = 20
 
   Array(height * width)
     .join('.')
@@ -18,6 +18,8 @@ function createGameBoard() {
       squares.push(square)
       grid.appendChild(square)
     })
+
+  showShape(65)
 }
 
 function showShape(startPoint) {
@@ -34,14 +36,50 @@ function showShape(startPoint) {
 }
 
 function moveLeft() {
-  squares.forEach(square => square.classList.remove('black'))
-  showShape(shapeIndex - 1)
+  if (shapeIndex % width > 0) {
+    squares.forEach(square => square.classList.remove('black'))
+    showShape(shapeIndex - 1)
+  }
 }
 
 function moveRight() {
-  squares.forEach(square => square.classList.remove('black'))
-  showShape(shapeIndex + 1)
+  if (shapeIndex % width < width - 4 /* this number 4 depends on the shape*/) {
+    squares.forEach(square => square.classList.remove('black'))
+    showShape(shapeIndex + 1)
+  }
 }
 
+function moveDown() {
+  if (shapeIndex + width < height * width) {
+    squares.forEach(square => square.classList.remove('black'))
+    showShape(shapeIndex + 10)
+  }
+}
+
+function handleKeyDown(e) {
+  switch (e.keyCode) {
+    //left
+    case 37:
+      moveLeft()
+      break
+    //up
+    case 38:
+      // if (playerIndex - width >= 0) {
+      //   playerIndex -= width
+      // }
+      break
+    //right
+    case 39:
+      moveRight()
+      break
+    //down
+    case 40:
+      moveDown()
+      break
+    default:
+  }
+}
+
+window.addEventListener('keydown', handleKeyDown)
 
 window.addEventListener('DOMContentLoaded', createGameBoard)
