@@ -33,5 +33,15 @@ function showShape(startPoint) {
   cell3.classList.add('black')
 }
 
+function moveLeft() {
+  squares.forEach(square => square.classList.remove('black'))
+  showShape(shapeIndex - 1)
+}
+
+function moveRight() {
+  squares.forEach(square => square.classList.remove('black'))
+  showShape(shapeIndex + 1)
+}
+
 
 window.addEventListener('DOMContentLoaded', createGameBoard)
