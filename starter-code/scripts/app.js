@@ -184,14 +184,12 @@ function colorShape() {
   cell3.classList.add('black')
 }
 
-
 function checkLeftEdge(currentIndexes) {
   const leftEdge = currentIndexes.filter(element => {
     return element % width === 0
   })
   return leftEdge
 }
-
 
 function moveLeft() {
   const leftEdge = checkLeftEdge(currentIndexes)
@@ -210,11 +208,9 @@ function checkRightEdge(currentIndexes) {
 }
 
 function moveRight() {
-  
   const rightEdge = checkRightEdge(currentIndexes)
   if (rightEdge.length === 0) {
     shapeIndex++
-    console.log('shapeIndex', shapeIndex)
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
   }
@@ -228,86 +224,60 @@ function moveDown() {
   }
 }
 
+function checkRotation(currentIndexes) {
+  const rotationCheck = currentIndexes.filter(element => {
+    return element % width !== 9 && element % width !== 0
+  })
+  return rotationCheck
+}
+
 function rotate() {
+  const previousShape = tetrominoShape
   if (tetrominoShape === 'stick') {
     tetrominoShape = 'stick180'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
-  } else if (
-    tetrominoShape === 'stick180' &&
-    (shapeIndex + 1) % width !== 0 &&
-    shapeIndex % width !== 7 &&
-    shapeIndex % width !== 8
-  ) {
+  } else if (tetrominoShape === 'stick180') {
     tetrominoShape = 'stick'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
-  } else if (tetrominoShape === 'lShape' && shapeIndex % width !== 0) {
+  } else if (tetrominoShape === 'lShape') {
     tetrominoShape = 'lShape90'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'lShape90') {
     tetrominoShape = 'lShape180'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'lShape180') {
     tetrominoShape = 'lShape270'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'lShape270') {
     tetrominoShape = 'lShape'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'lShape270') {
     tetrominoShape = 'lShape'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'jShape') {
     tetrominoShape = 'jShape90'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'jShape90') {
     tetrominoShape = 'jShape180'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'jShape180') {
     tetrominoShape = 'jShape270'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'jShape270') {
     tetrominoShape = 'jShape'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'sShape') {
     tetrominoShape = 'sShape90'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'sShape90') {
     tetrominoShape = 'sShape'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'zShape') {
     tetrominoShape = 'zShape90'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'zShape90') {
     tetrominoShape = 'zShape'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
-  } else if (tetrominoShape === 'tShape' && shapeIndex > 10) {
+  } else if (tetrominoShape === 'tShape') {
     tetrominoShape = 'tShape90'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'tShape90') {
     tetrominoShape = 'tShape180'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'tShape180') {
     tetrominoShape = 'tShape270'
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
   } else if (tetrominoShape === 'tShape270') {
     tetrominoShape = 'tShape'
+  }
+  createShape(shapeIndex, tetrominoShape)
+  const rotationCheck = checkRotation(currentIndexes)
+  if (rotationCheck.length >= 2) {
+    showShape(currentIndexes)
+  } else {
+    tetrominoShape = previousShape
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
   }
