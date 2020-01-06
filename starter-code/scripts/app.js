@@ -1,13 +1,7 @@
 // const game = {}
 const squares = []
-let shapeIndex
-let tetromino
 const width = 10
 const height = 20
-let cell0
-let cell1
-let cell2
-let cell3
 
 function createGameBoard() {
   const grid = document.querySelector('.grid')
@@ -23,11 +17,38 @@ function createGameBoard() {
       grid.appendChild(square)
     })
 
-  showShape(65, 'zShape')
+  showShape(currentIndexes)
 }
 
-function setShape() {
-  tetromino = 'zShape'
+let shapeIndex = 5
+let currentShape = 'stick'
+let currentIndexes = [
+  shapeIndex,
+  shapeIndex + 1,
+  shapeIndex + 2,
+  shapeIndex + 3
+]
+let cell0
+let cell1
+let cell2
+let cell3
+
+function updateCurrentIndexes(shapeIndex) {
+  return (currentIndexes = [
+    shapeIndex,
+    shapeIndex + 1,
+    shapeIndex + 2,
+    shapeIndex + 3
+  ])
+}
+
+function showShape(currentIndexes) {
+  squares.forEach(square => square.classList.remove('black'))
+  cell0 = document.querySelector(`#${CSS.escape(currentIndexes[0])}`)
+  cell1 = document.querySelector(`#${CSS.escape(currentIndexes[1])}`)
+  cell2 = document.querySelector(`#${CSS.escape(currentIndexes[2])}`)
+  cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
+  colorShape()
 }
 
 function colorShape() {
@@ -37,85 +58,27 @@ function colorShape() {
   cell3.classList.add('black')
 }
 
-function showShape(startPoint, tetromino) {
-  shapeIndex = startPoint
-  if (tetromino === 'stick') {
-    cell0 = document.querySelector(`#${CSS.escape(startPoint)}`)
-    cell1 = document.querySelector(`#${CSS.escape(startPoint + 1)}`)
-    cell2 = document.querySelector(`#${CSS.escape(startPoint + 2)}`)
-    cell3 = document.querySelector(`#${CSS.escape(startPoint + 3)}`)
-    colorShape()
-    setShape()
-  } else if (tetromino === 'lShape') {
-    cell0 = document.querySelector(`#${CSS.escape(startPoint)}`)
-    cell1 = document.querySelector(`#${CSS.escape(startPoint + 1)}`)
-    cell2 = document.querySelector(`#${CSS.escape(startPoint + 2)}`)
-    cell3 = document.querySelector(`#${CSS.escape(startPoint + 12)}`)
-
-    colorShape()
-    setShape()
-  } else if (tetromino === 'sShape') {
-    cell0 = document.querySelector(`#${CSS.escape(startPoint)}`)
-    cell1 = document.querySelector(`#${CSS.escape(startPoint + 1)}`)
-    cell2 = document.querySelector(`#${CSS.escape(startPoint + 9)}`)
-    cell3 = document.querySelector(`#${CSS.escape(startPoint + 10)}`)
-
-    colorShape()
-    setShape()
-  } else if (tetromino === 'cube') {
-    cell0 = document.querySelector(`#${CSS.escape(startPoint)}`)
-    cell1 = document.querySelector(`#${CSS.escape(startPoint + 1)}`)
-    cell2 = document.querySelector(`#${CSS.escape(startPoint + 10)}`)
-    cell3 = document.querySelector(`#${CSS.escape(startPoint + 11)}`)
-
-    colorShape()
-    setShape()
-  } else if (tetromino === 'tShape') {
-    cell0 = document.querySelector(`#${CSS.escape(startPoint)}`)
-    cell1 = document.querySelector(`#${CSS.escape(startPoint + 9)}`)
-    cell2 = document.querySelector(`#${CSS.escape(startPoint + 10)}`)
-    cell3 = document.querySelector(`#${CSS.escape(startPoint + 11)}`)
-
-    colorShape()
-    setShape()
-  } else if (tetromino === 'jShape') {
-    cell0 = document.querySelector(`#${CSS.escape(startPoint)}`)
-    cell1 = document.querySelector(`#${CSS.escape(startPoint + 1)}`)
-    cell2 = document.querySelector(`#${CSS.escape(startPoint + 2)}`)
-    cell3 = document.querySelector(`#${CSS.escape(startPoint + 10)}`)
-
-    colorShape()
-    setShape()
-  } else if (tetromino === 'zShape') {
-    cell0 = document.querySelector(`#${CSS.escape(startPoint)}`)
-    cell1 = document.querySelector(`#${CSS.escape(startPoint + 1)}`)
-    cell2 = document.querySelector(`#${CSS.escape(startPoint + 11)}`)
-    cell3 = document.querySelector(`#${CSS.escape(startPoint + 12)}`)
-
-    colorShape()
-    setShape()
-  }
-}
-
 function moveLeft() {
-  console.log('tetromino', tetromino)
   if (shapeIndex % width > 0) {
-    squares.forEach(square => square.classList.remove('black'))
-    showShape(shapeIndex - 1, tetromino)
+    shapeIndex--
+    updateCurrentIndexes(shapeIndex)
+    showShape(currentIndexes)
   }
 }
 
 function moveRight() {
   if (shapeIndex % width < width - 4 /* this number 4 depends on the shape*/) {
-    squares.forEach(square => square.classList.remove('black'))
-    showShape(shapeIndex + 1, tetromino)
+    shapeIndex++
+    updateCurrentIndexes(shapeIndex)
+    showShape(currentIndexes)
   }
 }
 
 function moveDown() {
   if (shapeIndex + width < height * width) {
-    squares.forEach(square => square.classList.remove('black'))
-    showShape(shapeIndex + 10, tetromino)
+    shapeIndex = shapeIndex + 10
+    updateCurrentIndexes(shapeIndex)
+    showShape(currentIndexes)
   }
 }
 
