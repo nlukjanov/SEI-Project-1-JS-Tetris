@@ -18,13 +18,12 @@ function createGameBoard() {
     })
 
   // test game setup
-  // updateCurrentIndexes(shapeIndex)
   createShape(shapeIndex, tetrominoShape)
   showShape(currentIndexes)
 }
 
 let shapeIndex = 4
-let tetrominoShape = 'tShape'
+let tetrominoShape = 'sShape'
 let currentIndexes
 let cell0
 let cell1
@@ -175,6 +174,7 @@ function showShape(currentIndexes) {
   cell2 = document.querySelector(`#${CSS.escape(currentIndexes[2])}`)
   cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
   colorShape()
+  console.log('shapeIndex', shapeIndex)
 }
 
 function colorShape() {
@@ -184,17 +184,37 @@ function colorShape() {
   cell3.classList.add('black')
 }
 
+
+function checkLeftEdge(currentIndexes) {
+  const leftEdge = currentIndexes.filter(element => {
+    return element % width === 0
+  })
+  return leftEdge
+}
+
+
 function moveLeft() {
-  if (shapeIndex % width > 0) {
+  const leftEdge = checkLeftEdge(currentIndexes)
+  if (leftEdge.length === 0) {
     shapeIndex--
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
   }
 }
 
+function checkRightEdge(currentIndexes) {
+  const rightEdge = currentIndexes.filter(element => {
+    return element % width === 9
+  })
+  return rightEdge
+}
+
 function moveRight() {
-  if (shapeIndex % width < width - 4 /* this number 4 depends on the shape*/) {
+  
+  const rightEdge = checkRightEdge(currentIndexes)
+  if (rightEdge.length === 0) {
     shapeIndex++
+    console.log('shapeIndex', shapeIndex)
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
   }
@@ -213,11 +233,16 @@ function rotate() {
     tetrominoShape = 'stick180'
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
-  } else if (tetrominoShape === 'stick180') {
+  } else if (
+    tetrominoShape === 'stick180' &&
+    (shapeIndex + 1) % width !== 0 &&
+    shapeIndex % width !== 7 &&
+    shapeIndex % width !== 8
+  ) {
     tetrominoShape = 'stick'
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
-  } else if (tetrominoShape === 'lShape') {
+  } else if (tetrominoShape === 'lShape' && shapeIndex % width !== 0) {
     tetrominoShape = 'lShape90'
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
