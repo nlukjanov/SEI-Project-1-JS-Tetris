@@ -23,7 +23,7 @@ function createGameBoard() {
 }
 
 let shapeIndex = 4
-let tetrominoShape = 'sShape'
+let tetrominoShape = 'tShape'
 let currentIndexes
 let cell0
 let cell1
@@ -175,6 +175,8 @@ function showShape(currentIndexes) {
   cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
   colorShape()
   console.log('shapeIndex', shapeIndex)
+  console.log(currentIndexes) 
+  
 }
 
 function colorShape() {
@@ -216,8 +218,16 @@ function moveRight() {
   }
 }
 
+function checkBottomEdge(currentIndexes) {
+  const bottomEdge = currentIndexes.filter(element => {
+    return element >= 190 && element < 200
+  })
+  return bottomEdge
+}
+
 function moveDown() {
-  if (shapeIndex + width < height * width) {
+  const bottomEdge = checkBottomEdge(currentIndexes)
+  if (bottomEdge.length === 0) {
     shapeIndex = shapeIndex + 10
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
@@ -233,6 +243,8 @@ function checkRotation(currentIndexes) {
 
 function rotate() {
   const previousShape = tetrominoShape
+  const rotationCheck = checkRotation(currentIndexes)
+  const bottomEdge = checkBottomEdge(currentIndexes)
   if (tetrominoShape === 'stick') {
     tetrominoShape = 'stick180'
   } else if (tetrominoShape === 'stick180') {
@@ -273,8 +285,7 @@ function rotate() {
     tetrominoShape = 'tShape'
   }
   createShape(shapeIndex, tetrominoShape)
-  const rotationCheck = checkRotation(currentIndexes)
-  if (rotationCheck.length >= 2) {
+  if (rotationCheck.length >= 2 && bottomEdge.length < 2) {
     showShape(currentIndexes)
   } else {
     tetrominoShape = previousShape
