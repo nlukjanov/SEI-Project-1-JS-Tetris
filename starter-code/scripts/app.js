@@ -17,29 +17,155 @@ function createGameBoard() {
       grid.appendChild(square)
     })
 
+  // test game setup
+  // updateCurrentIndexes(shapeIndex)
+  createShape(shapeIndex, tetrominoShape)
   showShape(currentIndexes)
 }
 
-let shapeIndex = 5
-let currentShape = 'stick'
-let currentIndexes = [
-  shapeIndex,
-  shapeIndex + 1,
-  shapeIndex + 2,
-  shapeIndex + 3
-]
+let shapeIndex = 4
+let tetrominoShape = 'tShape'
+let currentIndexes
 let cell0
 let cell1
 let cell2
 let cell3
 
-function updateCurrentIndexes(shapeIndex) {
-  return (currentIndexes = [
-    shapeIndex,
-    shapeIndex + 1,
-    shapeIndex + 2,
-    shapeIndex + 3
-  ])
+function createShape(shapeIndex, tetrominoShape) {
+  if (tetrominoShape === 'stick') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 1,
+      shapeIndex + 2,
+      shapeIndex + 3
+    ])
+  } else if (tetrominoShape === 'stick180') {
+    return (currentIndexes = [
+      shapeIndex + 1,
+      shapeIndex + 11,
+      shapeIndex + 21,
+      shapeIndex + 31
+    ])
+  } else if (tetrominoShape === 'lShape') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 10,
+      shapeIndex + 20,
+      shapeIndex + 21
+    ])
+  } else if (tetrominoShape === 'lShape90') {
+    return (currentIndexes = [
+      shapeIndex + 9,
+      shapeIndex + 10,
+      shapeIndex + 11,
+      shapeIndex + 19
+    ])
+  } else if (tetrominoShape === 'lShape180') {
+    return (currentIndexes = [
+      shapeIndex - 1,
+      shapeIndex,
+      shapeIndex + 10,
+      shapeIndex + 20
+    ])
+  } else if (tetrominoShape === 'lShape270') {
+    return (currentIndexes = [
+      shapeIndex + 1,
+      shapeIndex + 9,
+      shapeIndex + 10,
+      shapeIndex + 11
+    ])
+  } else if (tetrominoShape === 'jShape') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 10,
+      shapeIndex + 20,
+      shapeIndex + 19
+    ])
+  } else if (tetrominoShape === 'jShape90') {
+    return (currentIndexes = [
+      shapeIndex - 1,
+      shapeIndex + 9,
+      shapeIndex + 10,
+      shapeIndex + 11
+    ])
+  } else if (tetrominoShape === 'jShape180') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 1,
+      shapeIndex + 10,
+      shapeIndex + 20
+    ])
+  } else if (tetrominoShape === 'jShape270') {
+    return (currentIndexes = [
+      shapeIndex + 9,
+      shapeIndex + 10,
+      shapeIndex + 11,
+      shapeIndex + 21
+    ])
+  } else if (tetrominoShape === 'sShape') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 1,
+      shapeIndex + 9,
+      shapeIndex + 10
+    ])
+  } else if (tetrominoShape === 'sShape90') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 10,
+      shapeIndex + 11,
+      shapeIndex + 21
+    ])
+  } else if (tetrominoShape === 'zShape') {
+    return (currentIndexes = [
+      shapeIndex - 1,
+      shapeIndex,
+      shapeIndex + 10,
+      shapeIndex + 11
+    ])
+  } else if (tetrominoShape === 'zShape90') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 9,
+      shapeIndex + 10,
+      shapeIndex + 19
+    ])
+  } else if (tetrominoShape === 'tShape') {
+    return (currentIndexes = [
+      shapeIndex - 1,
+      shapeIndex,
+      shapeIndex + 1,
+      shapeIndex + 10
+    ])
+  } else if (tetrominoShape === 'tShape90') {
+    return (currentIndexes = [
+      shapeIndex - 10,
+      shapeIndex - 1,
+      shapeIndex,
+      shapeIndex + 10
+    ])
+  } else if (tetrominoShape === 'tShape180') {
+    return (currentIndexes = [
+      shapeIndex - 10,
+      shapeIndex - 1,
+      shapeIndex,
+      shapeIndex + 1
+    ])
+  } else if (tetrominoShape === 'tShape270') {
+    return (currentIndexes = [
+      shapeIndex - 10,
+      shapeIndex,
+      shapeIndex + 1,
+      shapeIndex + 10
+    ])
+  } else if (tetrominoShape === 'cube') {
+    return (currentIndexes = [
+      shapeIndex,
+      shapeIndex + 1,
+      shapeIndex + 10,
+      shapeIndex + 11
+    ])
+  }
 }
 
 function showShape(currentIndexes) {
@@ -61,7 +187,7 @@ function colorShape() {
 function moveLeft() {
   if (shapeIndex % width > 0) {
     shapeIndex--
-    updateCurrentIndexes(shapeIndex)
+    createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
   }
 }
@@ -69,7 +195,7 @@ function moveLeft() {
 function moveRight() {
   if (shapeIndex % width < width - 4 /* this number 4 depends on the shape*/) {
     shapeIndex++
-    updateCurrentIndexes(shapeIndex)
+    createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
   }
 }
@@ -77,13 +203,89 @@ function moveRight() {
 function moveDown() {
   if (shapeIndex + width < height * width) {
     shapeIndex = shapeIndex + 10
-    updateCurrentIndexes(shapeIndex)
+    createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
   }
 }
 
 function rotate() {
-  
+  if (tetrominoShape === 'stick') {
+    tetrominoShape = 'stick180'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'stick180') {
+    tetrominoShape = 'stick'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'lShape') {
+    tetrominoShape = 'lShape90'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'lShape90') {
+    tetrominoShape = 'lShape180'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'lShape180') {
+    tetrominoShape = 'lShape270'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'lShape270') {
+    tetrominoShape = 'lShape'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'lShape270') {
+    tetrominoShape = 'lShape'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'jShape') {
+    tetrominoShape = 'jShape90'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'jShape90') {
+    tetrominoShape = 'jShape180'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'jShape180') {
+    tetrominoShape = 'jShape270'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'jShape270') {
+    tetrominoShape = 'jShape'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'sShape') {
+    tetrominoShape = 'sShape90'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'sShape90') {
+    tetrominoShape = 'sShape'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'zShape') {
+    tetrominoShape = 'zShape90'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'zShape90') {
+    tetrominoShape = 'zShape'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'tShape' && shapeIndex > 10) {
+    tetrominoShape = 'tShape90'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'tShape90') {
+    tetrominoShape = 'tShape180'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'tShape180') {
+    tetrominoShape = 'tShape270'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  } else if (tetrominoShape === 'tShape270') {
+    tetrominoShape = 'tShape'
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+  }
 }
 
 function handleKeyDown(e) {
