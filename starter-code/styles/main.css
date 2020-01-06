@@ -15,15 +15,15 @@ body {
 }
 
 div.grid {
-  width: 400px;
-  height: 800px;
+  width: 300px;
+  height: 600px;
   display: flex;
   flex-wrap: wrap;
 }
 
 div.grid-item {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border: 1px dashed black;
 }
 
