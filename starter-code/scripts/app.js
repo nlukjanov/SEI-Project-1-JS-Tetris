@@ -244,7 +244,6 @@ function moveRight() {
 }
 
 function handleStart() {
-  // test game setup
   createNewTetromino()
   timerId = setInterval(moveDown, 200)
 }
@@ -262,11 +261,13 @@ function createNewTetromino() {
 }
 
 function checkBottomEdge(currentIndexes) {
-
   const bottomEdge = currentIndexes.filter(element => {
     const bottomBoundaryIndexes = [...new Set(bottomBoundaryArray.flat())]
     console.log(bottomBoundaryIndexes)
-    return (element >= 190 && element < 200) || bottomBoundaryIndexes.includes(element)
+    return (
+      (element >= 190 && element < 200) ||
+      bottomBoundaryIndexes.includes(element + 10)
+    )
   })
   return bottomEdge
 }
