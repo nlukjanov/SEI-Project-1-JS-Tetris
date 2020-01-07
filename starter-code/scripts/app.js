@@ -18,6 +18,8 @@ const arrayOfShapes = [
   'cube'
 ]
 
+const rows = []
+
 let random = Math.floor(Math.random() * 7)
 let tetrominoShape = arrayOfShapes[random]
 const bottomBoundaryArray = []
@@ -246,6 +248,7 @@ function moveRight() {
 function handleStart() {
   createNewTetromino()
   timerId = setInterval(moveDown, 200)
+  createRows()
 }
 
 function handleStop() {
@@ -263,13 +266,36 @@ function createNewTetromino() {
 function checkBottomEdge(currentIndexes) {
   const bottomEdge = currentIndexes.filter(element => {
     const bottomBoundaryIndexes = [...new Set(bottomBoundaryArray.flat())]
-    console.log(bottomBoundaryIndexes)
     return (
       (element >= 190 && element < 200) ||
       bottomBoundaryIndexes.includes(element + 10)
     )
   })
   return bottomEdge
+}
+
+function createRows() {
+  for (let i = 0; i < height; i++) {
+    rows[i] = []
+    for (let j = 0; j < width; j++) {
+      rows[i].push(squares[i * width + j])
+    }
+  }
+}
+
+function checkCompletedRow() {
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i].every(item => item.classList.contains('dropped'))
+    if (row) {
+      console.log(`Row ${i} is full`)
+      console.log('add point')
+      rows[i].forEach(item => item.classList.remove('dropped'))
+    }
+  }
+}
+
+function moveRows() {
+  const row = 
 }
 
 function moveDown() {
@@ -285,6 +311,7 @@ function moveDown() {
     bottomBoundaryArray.push(currentIndexes)
     handleStart()
   }
+  checkCompletedRow()
 }
 
 function checkRotation(currentIndexes) {
