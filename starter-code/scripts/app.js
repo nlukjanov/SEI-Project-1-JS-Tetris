@@ -2,8 +2,28 @@
 const squares = []
 const width = 10
 const height = 20
+let shapeIndex = 4
+let currentIndexes
+let cell0
+let cell1
+let cell2
+let cell3
+const arrayOfShapes = [
+  'stick',
+  'lShape',
+  'jShape',
+  'sShape',
+  'zShape',
+  'tShape',
+  'cube'
+]
+const random = Math.floor(Math.random() * 7)
+// let tetrominoShape = arrayOfShapes[random]
+let tetrominoShape = 'sShape'
 
 function createGameBoard() {
+  const startBtn = document.querySelector('#startBtn')
+  startBtn.addEventListener('click', handleStart)
   const grid = document.querySelector('.grid')
 
   Array(height * width)
@@ -16,19 +36,7 @@ function createGameBoard() {
       squares.push(square)
       grid.appendChild(square)
     })
-
-  // test game setup
-  createShape(shapeIndex, tetrominoShape)
-  showShape(currentIndexes)
 }
-
-let shapeIndex = 4
-let tetrominoShape = 'tShape'
-let currentIndexes
-let cell0
-let cell1
-let cell2
-let cell3
 
 function createShape(shapeIndex, tetrominoShape) {
   if (tetrominoShape === 'stick') {
@@ -175,8 +183,7 @@ function showShape(currentIndexes) {
   cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
   colorShape()
   console.log('shapeIndex', shapeIndex)
-  console.log(currentIndexes) 
-  
+  console.log(currentIndexes)
 }
 
 function colorShape() {
@@ -218,6 +225,29 @@ function moveRight() {
   }
 }
 
+function handleStart() {
+  // test game setup
+  createShape(shapeIndex, tetrominoShape)
+  showShape(currentIndexes)
+  const timerId = setInterval(() => {
+    shapeIndex = shapeIndex + 10
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
+    const bottomEdge = checkBottomEdge(currentIndexes)
+    console.log(bottomEdge)
+
+    if (bottomEdge.length !== 0) {
+      clearInterval(timerId)
+    }
+  }, 100)
+}
+
+function createNewTetrimino() {
+  let shapeIndex = 4
+  createShape(shapeIndex, tetrominoShape)
+  showShape(currentIndexes)
+}
+
 function checkBottomEdge(currentIndexes) {
   const bottomEdge = currentIndexes.filter(element => {
     return element >= 190 && element < 200
@@ -238,6 +268,7 @@ function checkRotation(currentIndexes) {
   const rotationCheck = currentIndexes.filter(element => {
     return element % width !== 9 && element % width !== 0
   })
+  console.log('rotationCheck', rotationCheck)
   return rotationCheck
 }
 
