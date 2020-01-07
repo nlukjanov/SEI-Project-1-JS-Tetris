@@ -19,7 +19,7 @@ const arrayOfShapes = [
 ]
 const random = Math.floor(Math.random() * 7)
 // let tetrominoShape = arrayOfShapes[random]
-let tetrominoShape = 'sShape'
+let tetrominoShape = 'jShape '
 
 function createGameBoard() {
   const startBtn = document.querySelector('#startBtn')
@@ -229,21 +229,21 @@ function handleStart() {
   // test game setup
   createShape(shapeIndex, tetrominoShape)
   showShape(currentIndexes)
-  const timerId = setInterval(() => {
-    shapeIndex = shapeIndex + 10
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
-    const bottomEdge = checkBottomEdge(currentIndexes)
-    console.log(bottomEdge)
+  // const timerId = setInterval(() => {
+  //   shapeIndex = shapeIndex + 10
+  //   createShape(shapeIndex, tetrominoShape)
+  //   showShape(currentIndexes)
+  //   const bottomEdge = checkBottomEdge(currentIndexes)
+  //   console.log(bottomEdge)
 
-    if (bottomEdge.length !== 0) {
-      clearInterval(timerId)
-    }
-  }, 100)
+  //   if (bottomEdge.length !== 0) {
+  //     clearInterval(timerId)
+  //   }
+  // }, 100)
 }
 
 function createNewTetrimino() {
-  let shapeIndex = 4
+  shapeIndex = 4
   createShape(shapeIndex, tetrominoShape)
   showShape(currentIndexes)
 }
@@ -266,16 +266,15 @@ function moveDown() {
 
 function checkRotation(currentIndexes) {
   const rotationCheck = currentIndexes.filter(element => {
-    return element % width !== 9 && element % width !== 0
+    return element % width === 9 || element % width === 0
   })
-  console.log('rotationCheck', rotationCheck)
+  // console.log('rotationCheck', rotationCheck)
   return rotationCheck
 }
 
 function rotate() {
   const previousShape = tetrominoShape
-  const rotationCheck = checkRotation(currentIndexes)
-  const bottomEdge = checkBottomEdge(currentIndexes)
+
   if (tetrominoShape === 'stick') {
     tetrominoShape = 'stick180'
   } else if (tetrominoShape === 'stick180') {
@@ -316,12 +315,27 @@ function rotate() {
     tetrominoShape = 'tShape'
   }
   createShape(shapeIndex, tetrominoShape)
-  if (rotationCheck.length >= 2 && bottomEdge.length < 2) {
-    showShape(currentIndexes)
+
+  const rotationCheck = checkRotation(currentIndexes)
+  const bottomEdge = checkBottomEdge(currentIndexes)
+  console.log('tetrominoShape', tetrominoShape)
+  if (tetrominoShape === 'sShape' || tetrominoShape === 'stick' ) {
+    if (rotationCheck.length < 2 && bottomEdge.length < 2) {
+      showShape(currentIndexes)
+    } else {
+      tetrominoShape = previousShape
+      createShape(shapeIndex, tetrominoShape)
+      showShape(currentIndexes)
+    }
   } else {
-    tetrominoShape = previousShape
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
+    console.log('rotationCheck', rotationCheck)
+    if (rotationCheck.length <= 2 && bottomEdge.length < 2) {
+      showShape(currentIndexes)
+    } else {
+      tetrominoShape = previousShape
+      createShape(shapeIndex, tetrominoShape)
+      showShape(currentIndexes)
+    }
   }
 }
 
