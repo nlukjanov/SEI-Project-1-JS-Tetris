@@ -36,3 +36,7 @@ div.grid-item.player {
 .black {
   background-color: black;
 }
+
+.dropped {
+  background-color: black;
+}

@@ -17,13 +17,17 @@ const arrayOfShapes = [
   'tShape',
   'cube'
 ]
-const random = Math.floor(Math.random() * 7)
-// let tetrominoShape = arrayOfShapes[random]
-let tetrominoShape = 'jShape '
+
+let random = Math.floor(Math.random() * 7)
+let tetrominoShape = arrayOfShapes[random]
+const bottomBoundaryArray = []
+let timerId
 
 function createGameBoard() {
   const startBtn = document.querySelector('#startBtn')
+  const stopBtn = document.querySelector('#stopBtn')
   startBtn.addEventListener('click', handleStart)
+  stopBtn.addEventListener('click', handleStop)
   const grid = document.querySelector('.grid')
 
   Array(height * width)
@@ -182,8 +186,22 @@ function showShape(currentIndexes) {
   cell2 = document.querySelector(`#${CSS.escape(currentIndexes[2])}`)
   cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
   colorShape()
-  console.log('shapeIndex', shapeIndex)
   console.log(currentIndexes)
+}
+
+function droppedShape(currentIndexes) {
+  cell0 = document.querySelector(`#${CSS.escape(currentIndexes[0])}`)
+  cell1 = document.querySelector(`#${CSS.escape(currentIndexes[1])}`)
+  cell2 = document.querySelector(`#${CSS.escape(currentIndexes[2])}`)
+  cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
+  fixDroppedShape()
+}
+
+function fixDroppedShape() {
+  cell0.classList.add('dropped')
+  cell1.classList.add('dropped')
+  cell2.classList.add('dropped')
+  cell3.classList.add('dropped')
 }
 
 function colorShape() {
@@ -227,49 +245,57 @@ function moveRight() {
 
 function handleStart() {
   // test game setup
-  createShape(shapeIndex, tetrominoShape)
-  showShape(currentIndexes)
-  // const timerId = setInterval(() => {
-  //   shapeIndex = shapeIndex + 10
-  //   createShape(shapeIndex, tetrominoShape)
-  //   showShape(currentIndexes)
-  //   const bottomEdge = checkBottomEdge(currentIndexes)
-  //   console.log(bottomEdge)
-
-  //   if (bottomEdge.length !== 0) {
-  //     clearInterval(timerId)
-  //   }
-  // }, 100)
+  createNewTetromino()
+  timerId = setInterval(moveDown, 200)
 }
 
-function createNewTetrimino() {
+function handleStop() {
+  clearInterval(timerId)
+}
+
+function createNewTetromino() {
   shapeIndex = 4
+  random = Math.floor(Math.random() * 7)
+  tetrominoShape = arrayOfShapes[random]
   createShape(shapeIndex, tetrominoShape)
   showShape(currentIndexes)
 }
 
 function checkBottomEdge(currentIndexes) {
+
   const bottomEdge = currentIndexes.filter(element => {
-    return element >= 190 && element < 200
+    const bottomBoundaryIndexes = [...new Set(bottomBoundaryArray.flat())]
+    console.log(bottomBoundaryIndexes)
+    return (element >= 190 && element < 200) || bottomBoundaryIndexes.includes(element)
   })
   return bottomEdge
 }
 
 function moveDown() {
   const bottomEdge = checkBottomEdge(currentIndexes)
+  console.log('bottomEdge', bottomEdge)
   if (bottomEdge.length === 0) {
     shapeIndex = shapeIndex + 10
     createShape(shapeIndex, tetrominoShape)
     showShape(currentIndexes)
+  } else {
+    clearInterval(timerId)
+    droppedShape(currentIndexes)
+    bottomBoundaryArray.push(currentIndexes)
+    handleStart()
   }
 }
 
 function checkRotation(currentIndexes) {
-  const rotationCheck = currentIndexes.filter(element => {
-    return element % width === 9 || element % width === 0
-  })
-  // console.log('rotationCheck', rotationCheck)
-  return rotationCheck
+  const bottomEdge = checkBottomEdge(currentIndexes)
+  if (bottomEdge.length === 0) {
+    const rotationCheck = currentIndexes.filter(element => {
+      return element % width === 9 || element % width === 0
+    })
+    return rotationCheck
+  } else {
+    return [0, 0, 0, 0]
+  }
 }
 
 function rotate() {
@@ -318,8 +344,7 @@ function rotate() {
 
   const rotationCheck = checkRotation(currentIndexes)
   const bottomEdge = checkBottomEdge(currentIndexes)
-  console.log('tetrominoShape', tetrominoShape)
-  if (tetrominoShape === 'sShape' || tetrominoShape === 'stick' ) {
+  if (tetrominoShape === 'sShape' || tetrominoShape === 'stick') {
     if (rotationCheck.length < 2 && bottomEdge.length < 2) {
       showShape(currentIndexes)
     } else {
@@ -328,7 +353,6 @@ function rotate() {
       showShape(currentIndexes)
     }
   } else {
-    console.log('rotationCheck', rotationCheck)
     if (rotationCheck.length <= 2 && bottomEdge.length < 2) {
       showShape(currentIndexes)
     } else {
