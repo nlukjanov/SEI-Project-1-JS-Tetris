@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>SEI Project 1 Tetris</title>
     <script type="text/javascript" src="scripts/app.js"></script>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
-  <div class="grid">
-  </div>
-  <button id='startBtn'>Start</button>
-  <button id='stopBtn'>Stop</button>
+    <div class="grid"></div>
+    <div class="controls">
+      <button id="startBtn">Start</button>
+      <button id="stopBtn">Stop</button>
+      <div id="gameOver">Status</div>
+      <div>Score: <span id="score">0</span></div>
+    </div>
   </body>
 </html>

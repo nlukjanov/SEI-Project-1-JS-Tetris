@@ -21,6 +21,12 @@ div.grid {
   flex-wrap: wrap;
 }
 
+div.controls {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column
+}
+
 div.grid-item {
   width: 25px;
   height: 25px;

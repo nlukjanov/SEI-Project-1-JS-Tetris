@@ -32,7 +32,9 @@ const arrayOfShapes = [
 ]
 
 const gameOverIndexes = [40,41,42,43,44,45,46,47,48,49]
-let gameOver = false
+let gameOverDisplay
+let scoreDisplay
+let score = 0
 
 const rows = []
 
@@ -43,6 +45,8 @@ let boundaryIndexesToRemove = []
 let timerId
 
 function createGameBoard() {
+  gameOverDisplay = document.querySelector('#gameOver')
+  scoreDisplay = document.querySelector('#score')
   const startBtn = document.querySelector('#startBtn')
   const stopBtn = document.querySelector('#stopBtn')
   startBtn.addEventListener('click', handleStart)
@@ -304,6 +308,8 @@ function checkCompletedRow() {
     let startOfCompletedRow
     if (row) {
       // can add points in this function
+      score++
+      scoreDisplay.innerHTML = score
       rows[i].forEach(item => {
         item.classList.remove('dropped')
         boundaryIndexesToRemove.push(Number(item.id))
@@ -368,6 +374,7 @@ function checkGameOver() {
     console.log('bottomBoundaryArray', bottomBoundaryArray.flat())
     if (bottomBoundaryArray.flat().includes(element)){
       handleStop()
+      gameOverDisplay.innerHTML = 'Game Over'
     }
   })
 }
