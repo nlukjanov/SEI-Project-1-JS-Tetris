@@ -15,22 +15,16 @@ body {
 }
 
 div.grid {
-  width: 300px;
-  height: 600px;
+  width: 250px;
+  height: 500px;
   display: flex;
   flex-wrap: wrap;
 }
 
 div.grid-item {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border: 1px dashed black;
-}
-
-div.grid-item.player {
-  background-image: url('../assets/pika-sprite.png');
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 
 .black {
