@@ -8,10 +8,14 @@ let cell0
 let cell1
 let cell2
 let cell3
-let shape = [cell0, cell1, cell2, cell3]
+const shape = [cell0, cell1, cell2, cell3]
 const arrayOfShapes = [
   'stick',
+  'stick180',
   'lShape',
+  'lShape90',
+  'lShape180',
+  'lShape270',
   'jShape',
   'sShape',
   'zShape',
@@ -19,9 +23,12 @@ const arrayOfShapes = [
   'cube'
 ]
 
+const gameOverIndexes = [40,41,42,43,44,45,46,47,48,49]
+let gameOver = false
+
 const rows = []
 
-let random = Math.floor(Math.random() * 7)
+let random = Math.floor(Math.random() * 11)
 let tetrominoShape = arrayOfShapes[random]
 let bottomBoundaryArray = []
 let boundaryIndexesToRemove = []
@@ -257,7 +264,7 @@ function handleStop() {
 
 function createNewTetromino() {
   shapeIndex = 4
-  random = Math.floor(Math.random() * 7)
+  random = Math.floor(Math.random() * 11)
   tetrominoShape = arrayOfShapes[random]
   createShape(shapeIndex, tetrominoShape)
   showShape(currentIndexes)
@@ -286,15 +293,16 @@ function createRows() {
 function checkCompletedRow() {
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i].every(item => item.classList.contains('dropped')) // returns true or false
+    let startOfCompletedRow
     if (row) {
       // can add points in this function
       rows[i].forEach(item => {
         item.classList.remove('dropped')
         boundaryIndexesToRemove.push(Number(item.id))
+        startOfCompletedRow = Math.max(...boundaryIndexesToRemove)
       })
-      moveRows()
       removeBoundaryIndexes()
-      moveRows()
+      moveRows(startOfCompletedRow)
     }
   }
 }
@@ -307,15 +315,32 @@ function removeBoundaryIndexes() {
   boundaryIndexesToRemove = []
 }
 
-function moveRows() {
+function moveRows(startOfCompletedRow) {
   console.log('bottomBoundaryArray', bottomBoundaryArray)
-
-  
+  console.log(startOfCompletedRow)
+  const cellsToMove = bottomBoundaryArray.filter(element => {
+    return element < startOfCompletedRow
+  })
+  console.log('cellsToMove', cellsToMove)
+  const updatedBoundary = bottomBoundaryArray.flat().map(element => {
+    if (cellsToMove.includes(element)) {
+      console.log('element', element)
+      return element + 10
+    } else {
+      return element
+    }
+  })
+  bottomBoundaryArray = updatedBoundary
+  squares.forEach(square => square.classList.remove('dropped'))
+  bottomBoundaryArray.forEach(cell => {
+    const cellToAddClass = document.querySelector(`#${CSS.escape([cell])}`)
+    cellToAddClass.classList.add('dropped')
+  })
+  console.log('bottomBoundaryArray', bottomBoundaryArray)
 }
 
 function moveDown() {
   const bottomEdge = checkBottomEdge(currentIndexes)
-  console.log('bottomEdge', bottomEdge)
   if (bottomEdge.length === 0) {
     shapeIndex = shapeIndex + 10
     createShape(shapeIndex, tetrominoShape)
@@ -327,6 +352,16 @@ function moveDown() {
     handleStart()
   }
   checkCompletedRow()
+  checkGameOver()
+}
+
+function checkGameOver() {
+  gameOverIndexes.forEach(element => {
+    console.log('bottomBoundaryArray', bottomBoundaryArray.flat())
+    if (bottomBoundaryArray.flat().includes(element)){
+      handleStop()
+    }
+  })
 }
 
 function checkRotation(currentIndexes) {
