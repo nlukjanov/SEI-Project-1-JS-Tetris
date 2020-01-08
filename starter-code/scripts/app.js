@@ -1,13 +1,14 @@
 // const game = {}
 const squares = []
 const width = 10
-const height = 20
+const height = 24
 let shapeIndex = 4
 let currentIndexes
 let cell0
 let cell1
 let cell2
 let cell3
+let shape = [cell0, cell1, cell2, cell3]
 const arrayOfShapes = [
   'stick',
   'lShape',
@@ -182,36 +183,34 @@ function createShape(shapeIndex, tetrominoShape) {
   }
 }
 
+function getCells(currentIndexes) {
+  for (let i = 0; i < currentIndexes.length; i++) {
+    shape[i] = document.querySelector(`#${CSS.escape(currentIndexes[i])}`)
+  }
+}
+
 function showShape(currentIndexes) {
   squares.forEach(square => square.classList.remove('black'))
-  cell0 = document.querySelector(`#${CSS.escape(currentIndexes[0])}`)
-  cell1 = document.querySelector(`#${CSS.escape(currentIndexes[1])}`)
-  cell2 = document.querySelector(`#${CSS.escape(currentIndexes[2])}`)
-  cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
+  getCells(currentIndexes)
   colorShape()
   console.log(currentIndexes)
 }
 
 function droppedShape(currentIndexes) {
-  cell0 = document.querySelector(`#${CSS.escape(currentIndexes[0])}`)
-  cell1 = document.querySelector(`#${CSS.escape(currentIndexes[1])}`)
-  cell2 = document.querySelector(`#${CSS.escape(currentIndexes[2])}`)
-  cell3 = document.querySelector(`#${CSS.escape(currentIndexes[3])}`)
+  getCells(currentIndexes)
   fixDroppedShape()
 }
 
 function fixDroppedShape() {
-  cell0.classList.add('dropped')
-  cell1.classList.add('dropped')
-  cell2.classList.add('dropped')
-  cell3.classList.add('dropped')
+  for (let i = 0; i < shape.length; i++) {
+    shape[i].classList.add('dropped')
+  }
 }
 
 function colorShape() {
-  cell0.classList.add('black')
-  cell1.classList.add('black')
-  cell2.classList.add('black')
-  cell3.classList.add('black')
+  for (let i = 0; i < shape.length; i++) {
+    shape[i].classList.add('black')
+  }
 }
 
 function checkLeftEdge(currentIndexes) {
@@ -268,7 +267,7 @@ function checkBottomEdge(currentIndexes) {
   const bottomEdge = currentIndexes.filter(element => {
     const bottomBoundaryIndexes = [...new Set(bottomBoundaryArray.flat())]
     return (
-      (element >= 190 && element < 200) ||
+      (element >= 230 && element < 240) ||
       bottomBoundaryIndexes.includes(element + 10)
     )
   })
@@ -290,11 +289,9 @@ function checkCompletedRow() {
     if (row) {
       // can add points in this function
       rows[i].forEach(item => {
-        console.log('item', item.id)
         item.classList.remove('dropped')
         boundaryIndexesToRemove.push(Number(item.id))
       })
-      console.log('boundaryIndexesToRemove', boundaryIndexesToRemove)
       moveRows()
       removeBoundaryIndexes()
       moveRows()
@@ -312,6 +309,8 @@ function removeBoundaryIndexes() {
 
 function moveRows() {
   console.log('bottomBoundaryArray', bottomBoundaryArray)
+
+  
 }
 
 function moveDown() {
