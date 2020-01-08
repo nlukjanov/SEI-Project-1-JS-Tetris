@@ -17,9 +17,17 @@ const arrayOfShapes = [
   'lShape180',
   'lShape270',
   'jShape',
+  'jShape90',
+  'jShape180',
+  'jShape270',
   'sShape',
+  'sShape90',
   'zShape',
+  'zShape90',
   'tShape',
+  'tShape90',
+  'tShape180',
+  'tShape270',
   'cube'
 ]
 
