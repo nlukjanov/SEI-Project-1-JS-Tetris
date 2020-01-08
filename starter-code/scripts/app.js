@@ -13,32 +13,24 @@ const arrayOfShapes = [
   'stick',
   'stick180',
   'lShape',
-  'lShape90',
-  'lShape180',
-  'lShape270',
   'jShape',
-  'jShape90',
-  'jShape180',
-  'jShape270',
   'sShape',
   'sShape90',
-  'zShape',
-  'zShape90',
   'tShape',
-  'tShape90',
-  'tShape180',
-  'tShape270',
   'cube'
 ]
 
 const gameOverIndexes = [40,41,42,43,44,45,46,47,48,49]
 let gameOverDisplay
 let scoreDisplay
+let linesRemovedDisplay
 let score = 0
+let level = 0
+let linesRemoved = 0
 
 const rows = []
 
-let random = Math.floor(Math.random() * 11)
+let random = Math.floor(Math.random() * 7)
 let tetrominoShape = arrayOfShapes[random]
 let bottomBoundaryArray = []
 let boundaryIndexesToRemove = []
@@ -47,10 +39,9 @@ let timerId
 function createGameBoard() {
   gameOverDisplay = document.querySelector('#gameOver')
   scoreDisplay = document.querySelector('#score')
+  linesRemovedDisplay = document.querySelector('#lines')
   const startBtn = document.querySelector('#startBtn')
-  const stopBtn = document.querySelector('#stopBtn')
   startBtn.addEventListener('click', handleStart)
-  stopBtn.addEventListener('click', handleStop)
   const grid = document.querySelector('.grid')
 
   Array(height * width)
@@ -212,7 +203,6 @@ function showShape(currentIndexes) {
   squares.forEach(square => square.classList.remove('black'))
   getCells(currentIndexes)
   colorShape()
-  console.log(currentIndexes)
 }
 
 function droppedShape(currentIndexes) {
@@ -276,7 +266,7 @@ function handleStop() {
 
 function createNewTetromino() {
   shapeIndex = 4
-  random = Math.floor(Math.random() * 11)
+  random = Math.floor(Math.random() * 7)
   tetrominoShape = arrayOfShapes[random]
   createShape(shapeIndex, tetrominoShape)
   showShape(currentIndexes)
@@ -308,8 +298,10 @@ function checkCompletedRow() {
     let startOfCompletedRow
     if (row) {
       // can add points in this function
-      score++
+      linesRemoved++
+      score = score + 10
       scoreDisplay.innerHTML = score
+      linesRemovedDisplay.innerHTML = linesRemoved
       rows[i].forEach(item => {
         item.classList.remove('dropped')
         boundaryIndexesToRemove.push(Number(item.id))
@@ -330,15 +322,11 @@ function removeBoundaryIndexes() {
 }
 
 function moveRows(startOfCompletedRow) {
-  console.log('bottomBoundaryArray', bottomBoundaryArray)
-  console.log(startOfCompletedRow)
   const cellsToMove = bottomBoundaryArray.filter(element => {
     return element < startOfCompletedRow
   })
-  console.log('cellsToMove', cellsToMove)
   const updatedBoundary = bottomBoundaryArray.flat().map(element => {
     if (cellsToMove.includes(element)) {
-      console.log('element', element)
       return element + 10
     } else {
       return element
@@ -350,7 +338,6 @@ function moveRows(startOfCompletedRow) {
     const cellToAddClass = document.querySelector(`#${CSS.escape([cell])}`)
     cellToAddClass.classList.add('dropped')
   })
-  console.log('bottomBoundaryArray', bottomBoundaryArray)
 }
 
 function moveDown() {
@@ -371,7 +358,6 @@ function moveDown() {
 
 function checkGameOver() {
   gameOverIndexes.forEach(element => {
-    console.log('bottomBoundaryArray', bottomBoundaryArray.flat())
     if (bottomBoundaryArray.flat().includes(element)){
       handleStop()
       gameOverDisplay.innerHTML = 'Game Over'
