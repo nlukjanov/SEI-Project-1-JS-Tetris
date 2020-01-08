@@ -22,7 +22,8 @@ const rows = []
 
 let random = Math.floor(Math.random() * 7)
 let tetrominoShape = arrayOfShapes[random]
-const bottomBoundaryArray = []
+let bottomBoundaryArray = []
+let boundaryIndexesToRemove = []
 let timerId
 
 function createGameBoard() {
@@ -285,17 +286,32 @@ function createRows() {
 
 function checkCompletedRow() {
   for (let i = 0; i < rows.length; i++) {
-    const row = rows[i].every(item => item.classList.contains('dropped'))
+    const row = rows[i].every(item => item.classList.contains('dropped')) // returns true or false
     if (row) {
-      console.log(`Row ${i} is full`)
-      console.log('add point')
-      rows[i].forEach(item => item.classList.remove('dropped'))
+      // can add points in this function
+      rows[i].forEach(item => {
+        console.log('item', item.id)
+        item.classList.remove('dropped')
+        boundaryIndexesToRemove.push(Number(item.id))
+      })
+      console.log('boundaryIndexesToRemove', boundaryIndexesToRemove)
+      moveRows()
+      removeBoundaryIndexes()
+      moveRows()
     }
   }
 }
 
+function removeBoundaryIndexes() {
+  const updatedBoundary = bottomBoundaryArray.flat().filter(element => {
+    return !boundaryIndexesToRemove.includes(element)
+  })
+  bottomBoundaryArray = updatedBoundary
+  boundaryIndexesToRemove = []
+}
+
 function moveRows() {
-  const row = 
+  console.log('bottomBoundaryArray', bottomBoundaryArray)
 }
 
 function moveDown() {
