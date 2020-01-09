@@ -1,7 +1,9 @@
-// const game = {}
+// game board variables
 const squares = []
 const width = 10
 const height = 24
+
+// game variables
 let shapeIndex = 4
 let currentIndexes
 let gameSpeed = 600
@@ -20,24 +22,24 @@ const arrayOfShapes = [
   'tShape',
   'cube'
 ]
-
+let score = 0
+let level = 0
+let linesRemoved = 0
 const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+const rows = []
+let bottomBoundaryArray = []
+let boundaryIndexesToRemove = []
+let timerId
+let random = Math.floor(Math.random() * 7)
+let tetrominoShape = arrayOfShapes[random]
+
+//display variables
 let gameOverDisplay
 let scoreDisplay
 let linesRemovedDisplay
 let levelDisplay
-let score = 0
-let level = 0
-let linesRemoved = 0
 
-const rows = []
-
-let random = Math.floor(Math.random() * 7)
-let tetrominoShape = arrayOfShapes[random]
-let bottomBoundaryArray = []
-let boundaryIndexesToRemove = []
-let timerId
-
+// create game board
 function createGameBoard() {
   gameOverDisplay = document.querySelector('#gameOver')
   scoreDisplay = document.querySelector('#score')
@@ -58,6 +60,8 @@ function createGameBoard() {
       grid.appendChild(square)
     })
 }
+
+// creation of tetromino
 
 function createShape(shapeIndex, tetrominoShape) {
   if (tetrominoShape === 'stick') {
@@ -207,11 +211,13 @@ function showShape(currentIndexes) {
   getCells(currentIndexes)
   colorShape()
 }
-
-function droppedShape(currentIndexes) {
-  getCells(currentIndexes)
-  fixDroppedShape()
+function colorShape() {
+  for (let i = 0; i < shape.length; i++) {
+    shape[i].classList.add('black')
+  }
 }
+
+// freezing a tetromino when it is dropped
 
 function fixDroppedShape() {
   for (let i = 0; i < shape.length; i++) {
@@ -219,12 +225,12 @@ function fixDroppedShape() {
   }
 }
 
-function colorShape() {
-  for (let i = 0; i < shape.length; i++) {
-    shape[i].classList.add('black')
-  }
+function droppedShape(currentIndexes) {
+  getCells(currentIndexes)
+  fixDroppedShape()
 }
 
+// checking boundaries for movement
 function checkLeftEdge(currentIndexes) {
   const leftEdge = currentIndexes.filter(element => {
     return element % width === 0
@@ -232,72 +238,11 @@ function checkLeftEdge(currentIndexes) {
   return leftEdge
 }
 
-function moveLeft() {
-  const leftEdge = checkLeftEdge(currentIndexes)
-  if (leftEdge.length === 0) {
-    shapeIndex--
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
-  }
-}
-
 function checkRightEdge(currentIndexes) {
   const rightEdge = currentIndexes.filter(element => {
     return element % width === 9
   })
   return rightEdge
-}
-
-function moveRight() {
-  const rightEdge = checkRightEdge(currentIndexes)
-  if (rightEdge.length === 0) {
-    shapeIndex++
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
-  }
-}
-
-function resetGame() {
-  shapeIndex = 4
-  currentIndexes
-  gameSpeed = 600
-  score = 0
-  level = 0
-  linesRemoved = 0
-  bottomBoundaryArray = []
-  boundaryIndexesToRemove = []
-  clearInterval(timerId)
-  squares.forEach(square => square.classList.remove('dropped'))
-  displayData()
-}
-
-function displayData() {
-  scoreDisplay.innerHTML = score
-  linesRemovedDisplay.innerHTML = linesRemoved
-  levelDisplay.innerHTML = level
-}
-
-function handleStart() {
-  resetGame()
-  spawnNewTetromino()
-  createRows()
-}
-
-function spawnNewTetromino() {
-  createNewTetromino()
-  timerId = setInterval(moveDown, gameSpeed)
-}
-
-function handleStop() {
-  clearInterval(timerId)
-}
-
-function createNewTetromino() {
-  shapeIndex = 4
-  random = Math.floor(Math.random() * 7)
-  tetrominoShape = arrayOfShapes[random]
-  createShape(shapeIndex, tetrominoShape)
-  showShape(currentIndexes)
 }
 
 function checkBottomEdge(currentIndexes) {
@@ -311,103 +256,29 @@ function checkBottomEdge(currentIndexes) {
   return bottomEdge
 }
 
-function createRows() {
-  for (let i = 0; i < height; i++) {
-    rows[i] = []
-    for (let j = 0; j < width; j++) {
-      rows[i].push(squares[i * width + j])
-    }
+// tetromino movements
+function moveLeft() {
+  const leftEdge = checkLeftEdge(currentIndexes)
+  if (leftEdge.length === 0) {
+    shapeIndex--
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
   }
 }
 
-function checkCompletedRow() {
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i].every(item => item.classList.contains('dropped')) // returns true or false
-    let startOfCompletedRow
-    if (row) {
-      // can add points in this function
-      linesRemoved++
-      score = score + 100 * (level + 1) // increase score with level
-      displayData()
-      console.log('levelDisplay', levelDisplay)
-      console.log('level', level)
-      rows[i].forEach(item => {
-        item.classList.remove('dropped')
-        boundaryIndexesToRemove.push(Number(item.id))
-        startOfCompletedRow = Math.max(...boundaryIndexesToRemove)
-      })
-      console.log('boundaryIndexesToRemove', boundaryIndexesToRemove)
-      removeBoundaryIndexes()
-      moveRows(startOfCompletedRow)
-      changeGameLevel()
-    }
+function moveRight() {
+  const rightEdge = checkRightEdge(currentIndexes)
+  if (rightEdge.length === 0) {
+    shapeIndex++
+    createShape(shapeIndex, tetrominoShape)
+    showShape(currentIndexes)
   }
-}
-
-function changeGameLevel() {
-  if (linesRemoved < 2) {
-    gameSpeed = 600
-    level = 0
-  } else if (linesRemoved < 4) {
-    gameSpeed = 550
-    level = 1
-  } else if (linesRemoved < 6) {
-    gameSpeed = 500
-    level = 2
-  } else if (linesRemoved < 8) {
-    gameSpeed = 450
-    level = 3
-  } else if (linesRemoved < 10) {
-    gameSpeed = 400
-    level = 4
-  } else if (linesRemoved < 12) {
-    gameSpeed = 350
-    level = 5
-  } else if (linesRemoved < 14) {
-    gameSpeed = 300
-    level = 6
-  } else if (linesRemoved < 16) {
-    gameSpeed = 250
-    level = 7
-  } else if (linesRemoved < 20) {
-    gameSpeed = 200
-    level = 8
-  } else if (linesRemoved < 25) {
-    gameSpeed = 100
-    level = 9
-  }
-  console.log('gameSpeed', gameSpeed)
-}
-
-function removeBoundaryIndexes() {
-  const updatedBoundary = bottomBoundaryArray.flat().filter(element => {
-    return !boundaryIndexesToRemove.includes(element)
-  })
-  bottomBoundaryArray = updatedBoundary
-  boundaryIndexesToRemove = []
-}
-
-function moveRows(startOfCompletedRow) {
-  const cellsToMove = bottomBoundaryArray.filter(element => {
-    return element < startOfCompletedRow
-  })
-  const updatedBoundary = bottomBoundaryArray.flat().map(element => {
-    if (cellsToMove.includes(element)) {
-      return element + 10
-    } else {
-      return element
-    }
-  })
-  bottomBoundaryArray = updatedBoundary
-  squares.forEach(square => square.classList.remove('dropped'))
-  bottomBoundaryArray.forEach(cell => {
-    const cellToAddClass = document.querySelector(`#${CSS.escape([cell])}`)
-    cellToAddClass.classList.add('dropped')
-  })
 }
 
 function moveDown() {
   const bottomEdge = checkBottomEdge(currentIndexes)
+  checkCompletedRow()
+  checkGameOver()
   if (bottomEdge.length === 0) {
     shapeIndex = shapeIndex + 10
     createShape(shapeIndex, tetrominoShape)
@@ -418,17 +289,6 @@ function moveDown() {
     bottomBoundaryArray.push(currentIndexes)
     spawnNewTetromino()
   }
-  checkCompletedRow()
-  checkGameOver()
-}
-
-function checkGameOver() {
-  gameOverIndexes.forEach(element => {
-    if (bottomBoundaryArray.flat().includes(element)) {
-      handleStop()
-      gameOverDisplay.innerHTML = 'Game Over'
-    }
-  })
 }
 
 function checkRotation(currentIndexes) {
@@ -485,8 +345,8 @@ function rotate() {
   } else if (tetrominoShape === 'tShape270') {
     tetrominoShape = 'tShape'
   }
-  createShape(shapeIndex, tetrominoShape)
 
+  createShape(shapeIndex, tetrominoShape)
   const rotationCheck = checkRotation(currentIndexes)
   const bottomEdge = checkBottomEdge(currentIndexes)
   if (tetrominoShape === 'sShape' || tetrominoShape === 'stick') {
@@ -508,6 +368,154 @@ function rotate() {
   }
 }
 
+// game controls
+
+function handleStart() {
+  resetGame()
+  spawnNewTetromino()
+  createRows()
+}
+
+function spawnNewTetromino() {
+  createNewTetromino()
+  timerId = setInterval(moveDown, gameSpeed)
+}
+
+function handleStop() {
+  clearInterval(timerId)
+}
+function resetGame() {
+  shapeIndex = 4
+  currentIndexes
+  gameSpeed = 600
+  score = 0
+  level = 0
+  linesRemoved = 0
+  bottomBoundaryArray = []
+  boundaryIndexesToRemove = []
+  clearInterval(timerId)
+  squares.forEach(square => square.classList.remove('dropped'))
+  displayData()
+}
+
+function displayData() {
+  scoreDisplay.innerHTML = score
+  linesRemovedDisplay.innerHTML = linesRemoved
+  levelDisplay.innerHTML = level
+}
+
+function createNewTetromino() {
+  shapeIndex = 4
+  random = Math.floor(Math.random() * 7)
+  tetrominoShape = arrayOfShapes[random]
+  createShape(shapeIndex, tetrominoShape)
+  showShape(currentIndexes)
+}
+
+// removal of completed rows
+
+function createRows() {
+  for (let i = 0; i < height; i++) {
+    rows[i] = []
+    for (let j = 0; j < width; j++) {
+      rows[i].push(squares[i * width + j])
+    }
+  }
+}
+
+function checkCompletedRow() {
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i].every(item => item.classList.contains('dropped')) // returns true or false
+    let endOfCompletedRow
+    if (row) {
+      // can add points in this function
+      linesRemoved++
+      score = score + 100 * (level + 1) // increase score with level
+      displayData()
+      rows[i].forEach(item => {
+        item.classList.remove('dropped')
+        boundaryIndexesToRemove.push(Number(item.id))
+        endOfCompletedRow = Math.max(...boundaryIndexesToRemove)
+      })
+      removeBoundaryIndexes()
+      moveRows(endOfCompletedRow)
+      changeGameLevel()
+    }
+  }
+}
+
+function removeBoundaryIndexes() {
+  const updatedBoundary = bottomBoundaryArray.flat().filter(element => {
+    return !boundaryIndexesToRemove.includes(element)
+  })
+  bottomBoundaryArray = updatedBoundary
+  boundaryIndexesToRemove = []
+}
+
+function moveRows(endOfCompletedRow) {
+  const cellsToMove = bottomBoundaryArray.filter(element => {
+    return element < endOfCompletedRow
+  })
+  const updatedBoundary = bottomBoundaryArray.flat().map(element => {
+    if (cellsToMove.includes(element)) {
+      return element + 10
+    } else {
+      return element
+    }
+  })
+  bottomBoundaryArray = updatedBoundary
+  squares.forEach(square => square.classList.remove('dropped'))
+  bottomBoundaryArray.forEach(cell => {
+    const cellToAddClass = document.querySelector(`#${CSS.escape([cell])}`)
+    cellToAddClass.classList.add('dropped')
+  })
+}
+
+function changeGameLevel() {
+  if (linesRemoved < 2) {
+    gameSpeed = 600
+    level = 0
+  } else if (linesRemoved < 4) {
+    gameSpeed = 550
+    level = 1
+  } else if (linesRemoved < 6) {
+    gameSpeed = 500
+    level = 2
+  } else if (linesRemoved < 8) {
+    gameSpeed = 450
+    level = 3
+  } else if (linesRemoved < 10) {
+    gameSpeed = 400
+    level = 4
+  } else if (linesRemoved < 12) {
+    gameSpeed = 350
+    level = 5
+  } else if (linesRemoved < 14) {
+    gameSpeed = 300
+    level = 6
+  } else if (linesRemoved < 16) {
+    gameSpeed = 250
+    level = 7
+  } else if (linesRemoved < 20) {
+    gameSpeed = 200
+    level = 8
+  } else if (linesRemoved < 25) {
+    gameSpeed = 100
+    level = 9
+  }
+}
+
+function checkGameOver() {
+  gameOverIndexes.forEach(element => {
+    if (bottomBoundaryArray.flat().includes(element)) {
+      handleStop()
+      gameOverDisplay.innerHTML = 'Game Over'
+    }
+  })
+}
+
+
+// key press handlers
 function handleKeyDown(e) {
   switch (e.keyCode) {
     //left
@@ -524,6 +532,7 @@ function handleKeyDown(e) {
       break
     //down
     case 40:
+      // if you press down you get score
       score++
       scoreDisplay.innerHTML = score
       moveDown()
