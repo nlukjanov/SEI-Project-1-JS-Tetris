@@ -26,7 +26,7 @@ let score = 0
 let level = 0
 let linesRemoved = 0
 const gameOverIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-// const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+// const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49] if I decide to add separate drop zone
 let gameOverStatus = false
 const rows = []
 let bottomBoundaryArray = []
@@ -40,6 +40,9 @@ let gameOverDisplay
 let scoreDisplay
 let linesRemovedDisplay
 let levelDisplay
+let gameMusic
+let gameFX
+const musicSpeeds = { 0: 1, 1: 1.05, 2: 1.1, 3: 1.15, 4: 1.2, 5: 1.25, 6: 1.3, 7: 1.35, 8: 1.4, 9: 1.45 }
 
 // create game board
 function createGameBoard() {
@@ -50,6 +53,8 @@ function createGameBoard() {
   const startBtn = document.querySelector('#startBtn')
   startBtn.addEventListener('click', handleStart)
   const grid = document.querySelector('.grid')
+  gameMusic = document.querySelector('#gameMusic')
+  gameFX = document.querySelector('#fx')
 
   Array(height * width)
     .join('.')
@@ -61,6 +66,11 @@ function createGameBoard() {
       squares.push(square)
       grid.appendChild(square)
     })
+  window.addEventListener('keydown', e => {
+    if (e.keyCode === 32) {
+      handleStart()
+    }
+  })
 }
 
 // creation of tetromino
@@ -379,6 +389,7 @@ function handleStart() {
   spawnNewTetromino()
   createRows()
   window.addEventListener('keydown', handleKeyDown)
+  playMusic()
 }
 
 function spawnNewTetromino() {
@@ -476,6 +487,7 @@ function moveRows(endOfCompletedRow) {
     const cellToAddClass = document.querySelector(`#${CSS.escape([cell])}`)
     cellToAddClass.classList.add('dropped')
   })
+  playFX('lineRemoved')
 }
 
 function changeGameLevel() {
@@ -510,6 +522,8 @@ function changeGameLevel() {
     gameSpeed = 100
     level = 9
   }
+  gameMusic.playbackRate = musicSpeeds[level]
+  displayData()
 }
 
 function checkGameOver() {
@@ -521,7 +535,6 @@ function checkGameOver() {
     }
   })
 }
-
 
 // key press handlers
 function handleKeyDown(e) {
@@ -545,10 +558,22 @@ function handleKeyDown(e) {
       scoreDisplay.innerHTML = score
       moveDown()
       break
+    case 77:
+      gameMusic.muted = !gameMusic.muted
+      break
     default:
   }
 }
 
+// audio
 
+function playMusic() {
+  gameMusic.play()
+}
+
+function playFX(fxToPlay) {
+  gameFX.src = `assets/${fxToPlay}.wav`
+  gameFX.play()
+}
 
 window.addEventListener('DOMContentLoaded', createGameBoard)
