@@ -255,15 +255,17 @@ function droppedShape(currentIndexes) {
 
 // checking boundaries for movement
 function checkLeftEdge(currentIndexes) {
+  const bottomBoundaryIndexes = [...new Set(bottomBoundaryArray.flat())]
   const leftEdge = currentIndexes.filter(element => {
-    return element % width === 0
+    return element % width === 0 || bottomBoundaryIndexes.includes(element - 1)
   })
   return leftEdge
 }
 
 function checkRightEdge(currentIndexes) {
+  const bottomBoundaryIndexes = [...new Set(bottomBoundaryArray.flat())]
   const rightEdge = currentIndexes.filter(element => {
-    return element % width === 9
+    return element % width === 9 || bottomBoundaryIndexes.includes(element + 1)
   })
   return rightEdge
 }
