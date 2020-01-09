@@ -8,6 +8,7 @@ let cell0
 let cell1
 let cell2
 let cell3
+let gameSpeed = 600
 const shape = [cell0, cell1, cell2, cell3]
 const arrayOfShapes = [
   'stick',
@@ -24,6 +25,7 @@ const gameOverIndexes = [40,41,42,43,44,45,46,47,48,49]
 let gameOverDisplay
 let scoreDisplay
 let linesRemovedDisplay
+let levelDisplay
 let score = 0
 let level = 0
 let linesRemoved = 0
@@ -40,6 +42,7 @@ function createGameBoard() {
   gameOverDisplay = document.querySelector('#gameOver')
   scoreDisplay = document.querySelector('#score')
   linesRemovedDisplay = document.querySelector('#lines')
+  levelDisplay = document.querySelector('#level')
   const startBtn = document.querySelector('#startBtn')
   startBtn.addEventListener('click', handleStart)
   const grid = document.querySelector('.grid')
@@ -256,7 +259,7 @@ function moveRight() {
 
 function handleStart() {
   createNewTetromino()
-  timerId = setInterval(moveDown, 200)
+  timerId = setInterval(moveDown, gameSpeed)
   createRows()
 }
 
@@ -299,18 +302,58 @@ function checkCompletedRow() {
     if (row) {
       // can add points in this function
       linesRemoved++
-      score = score + 10
+      score = score + (100 * (level + 1)) // increase score with level
       scoreDisplay.innerHTML = score
       linesRemovedDisplay.innerHTML = linesRemoved
+      levelDisplay.innerHTML = level
+      console.log('levelDisplay', levelDisplay)
+      console.log('level', level)
       rows[i].forEach(item => {
         item.classList.remove('dropped')
         boundaryIndexesToRemove.push(Number(item.id))
         startOfCompletedRow = Math.max(...boundaryIndexesToRemove)
       })
+      console.log('boundaryIndexesToRemove', boundaryIndexesToRemove)
       removeBoundaryIndexes()
       moveRows(startOfCompletedRow)
+      changeGameLevel()
     }
   }
+}
+
+function changeGameLevel() {
+  if (linesRemoved < 2) {
+    gameSpeed = 600
+    level = 0
+  } else if (linesRemoved < 4) {
+    gameSpeed = 550
+    level = 1
+  } else if (linesRemoved < 6) {
+    gameSpeed = 500
+    level = 2
+  } else if (linesRemoved < 8) {
+    gameSpeed = 450
+    level = 3
+  } else if (linesRemoved < 10) {
+    gameSpeed = 400
+    level = 4
+  } else if (linesRemoved < 12) {
+    gameSpeed = 350
+    level = 5
+  } else if (linesRemoved < 14) {
+    gameSpeed = 300
+    level = 6
+  } else if (linesRemoved < 16) {
+    gameSpeed = 250
+    level = 7
+  } else if (linesRemoved < 20) {
+    gameSpeed = 200
+    level = 8
+  } else if (linesRemoved < 25) {
+    gameSpeed = 100
+    level = 9
+  } 
+  console.log('gameSpeed', gameSpeed)
 }
 
 function removeBoundaryIndexes() {
@@ -458,6 +501,8 @@ function handleKeyDown(e) {
       break
     //down
     case 40:
+      score++
+      scoreDisplay.innerHTML = score
       moveDown()
       break
     default:
