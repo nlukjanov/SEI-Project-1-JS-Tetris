@@ -42,7 +42,18 @@ let linesRemovedDisplay
 let levelDisplay
 let gameMusic
 let gameFX
-const musicSpeeds = { 0: 1, 1: 1.05, 2: 1.1, 3: 1.15, 4: 1.2, 5: 1.25, 6: 1.3, 7: 1.35, 8: 1.4, 9: 1.45 }
+const musicSpeeds = {
+  0: 1,
+  1: 1.05,
+  2: 1.1,
+  3: 1.15,
+  4: 1.2,
+  5: 1.25,
+  6: 1.3,
+  7: 1.35,
+  8: 1.4,
+  9: 1.45
+}
 
 // create game board
 function createGameBoard() {
@@ -380,6 +391,7 @@ function rotate() {
       showShape(currentIndexes)
     }
   }
+  playFX('rotate')
 }
 
 // game controls
@@ -524,6 +536,7 @@ function changeGameLevel() {
   }
   gameMusic.playbackRate = musicSpeeds[level]
   displayData()
+  // window.watch('level', setInterval(playFX('levelUp'), 1000))
 }
 
 function checkGameOver() {
@@ -557,6 +570,7 @@ function handleKeyDown(e) {
       score++
       scoreDisplay.innerHTML = score
       moveDown()
+      playFX('moveDown')
       break
     case 77:
       gameMusic.muted = !gameMusic.muted
