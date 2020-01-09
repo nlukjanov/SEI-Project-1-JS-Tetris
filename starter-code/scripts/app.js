@@ -25,7 +25,9 @@ const arrayOfShapes = [
 let score = 0
 let level = 0
 let linesRemoved = 0
-const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+const gameOverIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+// const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+let gameOverStatus = false
 const rows = []
 let bottomBoundaryArray = []
 let boundaryIndexesToRemove = []
@@ -279,15 +281,17 @@ function moveDown() {
   const bottomEdge = checkBottomEdge(currentIndexes)
   checkCompletedRow()
   checkGameOver()
-  if (bottomEdge.length === 0) {
-    shapeIndex = shapeIndex + 10
-    createShape(shapeIndex, tetrominoShape)
-    showShape(currentIndexes)
-  } else {
-    clearInterval(timerId)
-    droppedShape(currentIndexes)
-    bottomBoundaryArray.push(currentIndexes)
-    spawnNewTetromino()
+  if (gameOverStatus === false) {
+    if (bottomEdge.length === 0) {
+      shapeIndex = shapeIndex + 10
+      createShape(shapeIndex, tetrominoShape)
+      showShape(currentIndexes)
+    } else {
+      clearInterval(timerId)
+      droppedShape(currentIndexes)
+      bottomBoundaryArray.push(currentIndexes)
+      spawnNewTetromino()
+    }
   }
 }
 
@@ -374,6 +378,7 @@ function handleStart() {
   resetGame()
   spawnNewTetromino()
   createRows()
+  window.addEventListener('keydown', handleKeyDown)
 }
 
 function spawnNewTetromino() {
@@ -383,7 +388,9 @@ function spawnNewTetromino() {
 
 function handleStop() {
   clearInterval(timerId)
+  window.removeEventListener('keydown', handleKeyDown)
 }
+
 function resetGame() {
   shapeIndex = 4
   currentIndexes
@@ -508,6 +515,7 @@ function changeGameLevel() {
 function checkGameOver() {
   gameOverIndexes.forEach(element => {
     if (bottomBoundaryArray.flat().includes(element)) {
+      gameOverStatus = true
       handleStop()
       gameOverDisplay.innerHTML = 'Game Over'
     }
@@ -541,6 +549,6 @@ function handleKeyDown(e) {
   }
 }
 
-window.addEventListener('keydown', handleKeyDown)
+
 
 window.addEventListener('DOMContentLoaded', createGameBoard)
