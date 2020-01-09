@@ -4,11 +4,11 @@ const width = 10
 const height = 24
 let shapeIndex = 4
 let currentIndexes
+let gameSpeed = 600
 let cell0
 let cell1
 let cell2
 let cell3
-let gameSpeed = 600
 const shape = [cell0, cell1, cell2, cell3]
 const arrayOfShapes = [
   'stick',
@@ -21,7 +21,7 @@ const arrayOfShapes = [
   'cube'
 ]
 
-const gameOverIndexes = [40,41,42,43,44,45,46,47,48,49]
+const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
 let gameOverDisplay
 let scoreDisplay
 let linesRemovedDisplay
@@ -257,10 +257,35 @@ function moveRight() {
   }
 }
 
+function resetGame() {
+  shapeIndex = 4
+  currentIndexes
+  gameSpeed = 600
+  score = 0
+  level = 0
+  linesRemoved = 0
+  bottomBoundaryArray = []
+  boundaryIndexesToRemove = []
+  clearInterval(timerId)
+  squares.forEach(square => square.classList.remove('dropped'))
+  displayData()
+}
+
+function displayData() {
+  scoreDisplay.innerHTML = score
+  linesRemovedDisplay.innerHTML = linesRemoved
+  levelDisplay.innerHTML = level
+}
+
 function handleStart() {
+  resetGame()
+  spawnNewTetromino()
+  createRows()
+}
+
+function spawnNewTetromino() {
   createNewTetromino()
   timerId = setInterval(moveDown, gameSpeed)
-  createRows()
 }
 
 function handleStop() {
@@ -302,10 +327,8 @@ function checkCompletedRow() {
     if (row) {
       // can add points in this function
       linesRemoved++
-      score = score + (100 * (level + 1)) // increase score with level
-      scoreDisplay.innerHTML = score
-      linesRemovedDisplay.innerHTML = linesRemoved
-      levelDisplay.innerHTML = level
+      score = score + 100 * (level + 1) // increase score with level
+      displayData()
       console.log('levelDisplay', levelDisplay)
       console.log('level', level)
       rows[i].forEach(item => {
@@ -352,7 +375,7 @@ function changeGameLevel() {
   } else if (linesRemoved < 25) {
     gameSpeed = 100
     level = 9
-  } 
+  }
   console.log('gameSpeed', gameSpeed)
 }
 
@@ -393,7 +416,7 @@ function moveDown() {
     clearInterval(timerId)
     droppedShape(currentIndexes)
     bottomBoundaryArray.push(currentIndexes)
-    handleStart()
+    spawnNewTetromino()
   }
   checkCompletedRow()
   checkGameOver()
@@ -401,7 +424,7 @@ function moveDown() {
 
 function checkGameOver() {
   gameOverIndexes.forEach(element => {
-    if (bottomBoundaryArray.flat().includes(element)){
+    if (bottomBoundaryArray.flat().includes(element)) {
       handleStop()
       gameOverDisplay.innerHTML = 'Game Over'
     }
