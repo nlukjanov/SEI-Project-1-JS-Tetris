@@ -25,8 +25,11 @@ const arrayOfShapes = [
 let score = 0
 let level = 0
 let linesRemoved = 0
+let storedLeaderBoard = localStorage.getItem('storedLeaderBoard')
+  ? JSON.parse(localStorage.getItem('storedLeaderBoard'))
+  : null
+const leaderBoard = storedLeaderBoard ? storedLeaderBoard : []
 const gameOverIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-const leaderBoard = []
 // const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49] if I decide to add separate drop zone
 let gameOverStatus = false
 const rows = []
@@ -83,6 +86,7 @@ function createGameBoard() {
       handleStart()
     }
   })
+  displayLeaderBoard()
 }
 
 // creation of tetromino
@@ -557,26 +561,41 @@ function checkGameOver() {
   })
 }
 
+// Leader board
+
 function recordScore() {
   const playerScore = {}
   const playerName = prompt('Please enter your name')
   playerScore.name = playerName
   playerScore.score = score
   leaderBoard.push(playerScore)
+  storeScores()
   displayLeaderBoard()
 }
 
 function displayLeaderBoard() {
-  const sortedScores = leaderBoard.sort((a, b) => b.score - a.score)
-  console.log('sortedScores', sortedScores)
+  const currentLeaderBoard = storedLeaderBoard ? storedLeaderBoard : leaderBoard
+  const sortedTop3 = currentLeaderBoard
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+  console.log('sortedTop3', sortedTop3)
   const names = []
   const scores = []
-  for (let i = 0; i < sortedScores.length; i++) {
-    names[i] = document.querySelector(`#name${CSS.escape([i + 1])}`)
-    scores[i] = document.querySelector(`#score${CSS.escape([i + 1])}`)
-    names[i].innerHTML = sortedScores[i].name
-    scores[i].innerHTML = sortedScores[i].score
+  if (sortedTop3.length !== 0) {
+    for (let i = 0; i < sortedTop3.length; i++) {
+      names[i] = document.querySelector(`#name${CSS.escape([i + 1])}`)
+      scores[i] = document.querySelector(`#score${CSS.escape([i + 1])}`)
+      names[i].innerHTML = sortedTop3[i].name
+      scores[i].innerHTML = sortedTop3[i].score
+    }
   }
+}
+
+// local Storage for leader board
+
+function storeScores() {
+  storedLeaderBoard = leaderBoard // assign storedHiScore to equal the current value of points
+  localStorage.setItem('storedLeaderBoard', JSON.stringify(storedLeaderBoard)) // set storedHiScore into local storage
 }
 
 // key press handlers
