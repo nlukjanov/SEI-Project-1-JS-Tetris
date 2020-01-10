@@ -69,7 +69,7 @@ body>div {
   height: 600px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items:center;
   background-color: var(--secondary-1-color);
 }
@@ -83,13 +83,18 @@ body>div {
 }
 
 .displays {
-  padding: 10px 30px;
-  justify-content: start;
+  padding: 10px 10px;
+  width: 230px;
+}
+
+.displays>div{
+  margin: 5px;
 }
 
 .instructions {
-  background-color: gainsboro;
-  padding: 10px 30px;
+  text-align: center;
+  padding: 5px 20px;
+  width: 236px;
 }
 
 .grid-item {
@@ -100,6 +105,20 @@ body>div {
 
 .leader-board {
   text-align: center;
+  width: 210px;
+}
+
+.game-data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.leader-board>div{
+  padding: 5px;
+}
+
+h3 { 
+  margin: 10px;
 }
 
 .shape {
@@ -113,8 +132,8 @@ body>div {
 a.button1 {
   padding: 5px 20px;
   display:inline-block;
-  border:0.1em solid var(--secondary-2-color);
-  margin:0px 10px;
+  border: 0.1em solid var(--secondary-2-color);
+  margin: 10px 10px;
   border-radius:0.12em;
   box-sizing: border-box;
   text-decoration:none;
