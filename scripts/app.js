@@ -67,8 +67,10 @@ function createGameBoard() {
   levelDisplay = document.querySelector('#level')
   const startBtn = document.querySelector('#startBtn')
   const stopBtn = document.querySelector('#stopBtn')
+  const resetLeaderBoardBtn = document.querySelector('#resetLeaderBoardBtn')
   startBtn.addEventListener('click', handleStart)
   stopBtn.addEventListener('click', handleStop)
+  resetLeaderBoardBtn.addEventListener('click', resetLeaderBoard)
   const grid = document.querySelector('.grid')
   gameMusic = document.querySelector('#gameMusic')
   gameFX = document.querySelector('#fx')
@@ -601,6 +603,11 @@ function displayLeaderBoard() {
 function storeScores() {
   storedLeaderBoard = leaderBoard // assign storedHiScore to equal the current value of points
   localStorage.setItem('storedLeaderBoard', JSON.stringify(storedLeaderBoard)) // set storedHiScore into local storage
+}
+
+function resetLeaderBoard() {
+  localStorage.clear()
+  location.reload()
 }
 
 // key press handlers
