@@ -563,7 +563,6 @@ function checkGameOver() {
     if (bottomBoundaryArray.flat().includes(element)) {
       gameOverStatus = true
       handleStop()
-      gameOverDisplay.innerHTML = 'Game Over'
     }
   })
 }
