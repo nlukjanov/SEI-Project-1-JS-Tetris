@@ -237,13 +237,13 @@ function getCells(currentIndexes) {
 }
 
 function showShape(currentIndexes) {
-  squares.forEach(square => square.classList.remove('black'))
+  squares.forEach(square => square.classList.remove('shape'))
   getCells(currentIndexes)
   colorShape()
 }
 function colorShape() {
   for (let i = 0; i < shape.length; i++) {
-    shape[i].classList.add('black')
+    shape[i].classList.add('shape')
   }
 }
 
@@ -426,7 +426,8 @@ function handleStop() {
   clearInterval(timerId)
   window.removeEventListener('keydown', handleKeyDown)
   gameMusic.pause()
-  resetGame()
+  squares.forEach(square => square.classList.remove('dropped'))
+  squares.forEach(square => square.classList.remove('shape'))
 }
 
 function resetGame() {
@@ -440,7 +441,7 @@ function resetGame() {
   boundaryIndexesToRemove = []
   clearInterval(timerId)
   squares.forEach(square => square.classList.remove('dropped'))
-  squares.forEach(square => square.classList.remove('black'))
+  squares.forEach(square => square.classList.remove('shape'))
   displayData()
 }
 
