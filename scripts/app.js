@@ -14,11 +14,10 @@ let cell3
 const shape = [cell0, cell1, cell2, cell3]
 const arrayOfShapes = [
   'stick',
-  'stick180',
   'lShape',
   'jShape',
   'sShape',
-  'sShape90',
+  'zShape',
   'tShape',
   'cube'
 ]
