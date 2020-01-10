@@ -26,6 +26,7 @@ let score = 0
 let level = 0
 let linesRemoved = 0
 const gameOverIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+const leaderBoard = []
 // const gameOverIndexes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49] if I decide to add separate drop zone
 let gameOverStatus = false
 const rows = []
@@ -316,6 +317,9 @@ function moveDown() {
       spawnNewTetromino()
     }
   }
+  if (gameOverStatus === true) {
+    recordScore()
+  }
 }
 
 function checkRotation(currentIndexes) {
@@ -399,10 +403,11 @@ function rotate() {
 // game controls
 
 function handleStart() {
+  gameOverStatus = false
   resetGame()
+  window.addEventListener('keydown', handleKeyDown)
   spawnNewTetromino()
   createRows()
-  window.addEventListener('keydown', handleKeyDown)
   playMusic()
 }
 
@@ -414,6 +419,7 @@ function spawnNewTetromino() {
 function handleStop() {
   clearInterval(timerId)
   window.removeEventListener('keydown', handleKeyDown)
+  gameMusic.pause()
 }
 
 function resetGame() {
@@ -551,6 +557,28 @@ function checkGameOver() {
   })
 }
 
+function recordScore() {
+  const playerScore = {}
+  const playerName = prompt('Please enter your name')
+  playerScore.name = playerName
+  playerScore.score = score
+  leaderBoard.push(playerScore)
+  displayLeaderBoard()
+}
+
+function displayLeaderBoard() {
+  const sortedScores = leaderBoard.sort((a, b) => b.score - a.score)
+  console.log('sortedScores', sortedScores)
+  const names = []
+  const scores = []
+  for (let i = 0; i < sortedScores.length; i++) {
+    names[i] = document.querySelector(`#name${CSS.escape([i + 1])}`)
+    scores[i] = document.querySelector(`#score${CSS.escape([i + 1])}`)
+    names[i].innerHTML = sortedScores[i].name
+    scores[i].innerHTML = sortedScores[i].score
+  }
+}
+
 // key press handlers
 function handleKeyDown(e) {
   switch (e.keyCode) {
@@ -576,6 +604,7 @@ function handleKeyDown(e) {
       break
     case 77:
       gameMusic.muted = !gameMusic.muted
+      gameFX.muted = !gameFX.muted
       break
     default:
   }
@@ -584,6 +613,7 @@ function handleKeyDown(e) {
 // audio
 
 function playMusic() {
+  gameMusic.currentTime = 0
   gameMusic.play()
 }
 
