@@ -341,6 +341,8 @@ function checkRotation(currentIndexes) {
 function rotate() {
   const previousShape = tetrominoShape
 
+  const jRotationCheck = checkRotation(currentIndexes)
+
   if (tetrominoShape === 'stick') {
     tetrominoShape = 'stick180'
   } else if (tetrominoShape === 'stick180') {
@@ -353,13 +355,11 @@ function rotate() {
     tetrominoShape = 'lShape270'
   } else if (tetrominoShape === 'lShape270') {
     tetrominoShape = 'lShape'
-  } else if (tetrominoShape === 'lShape270') {
-    tetrominoShape = 'lShape'
-  } else if (tetrominoShape === 'jShape') {
+  } else if (tetrominoShape === 'jShape' && jRotationCheck.length < 3) {
     tetrominoShape = 'jShape90'
   } else if (tetrominoShape === 'jShape90') {
     tetrominoShape = 'jShape180'
-  } else if (tetrominoShape === 'jShape180') {
+  } else if (tetrominoShape === 'jShape180'  && jRotationCheck.length < 3) {
     tetrominoShape = 'jShape270'
   } else if (tetrominoShape === 'jShape270') {
     tetrominoShape = 'jShape'
