@@ -1,5 +1,38 @@
+
+:root {
+  --main-color: #D7FC80;
+  --secondary-1-color: #FFCD81;
+  --secondary-2-color: #0F6ED7;
+  --complement-color: #EB25A1;
+}
+
+.color-primary-0 { color: #BBF927 }	/* Main Primary color */
+.color-primary-1 { color: #D7FC80 }
+.color-primary-2 { color: #C8FB51 }
+.color-primary-3 { color: #AEF800 }
+.color-primary-4 { color: #A5EC00 }
+
+.color-secondary-1-0 { color: #3284DF }	/* Main Secondary color (1) */
+.color-secondary-1-1 { color: #82B4ED }
+.color-secondary-1-2 { color: #569AE6 }
+.color-secondary-1-3 { color: #0F6ED7 }
+.color-secondary-1-4 { color: #0751A4 }
+
+.color-secondary-2-0 { color: #FFAA28 }	/* Main Secondary color (2) */
+.color-secondary-2-1 { color: #FFCD81 }
+.color-secondary-2-2 { color: #FFBB52 }
+.color-secondary-2-3 { color: #FF9A00 }
+.color-secondary-2-4 { color: #FB9800 }
+
+.color-complement-0 { color: #EB25A1 }	/* Main Complement color */
+.color-complement-1 { color: #F47CC7 }
+.color-complement-2 { color: #EF4DB3 }
+.color-complement-3 { color: #E50090 }
+.color-complement-4 { color: #C4007B }
+
 * {
   box-sizing: border-box;
+  color: var(--secondary-2-color)
 }
 
 html, body {
@@ -12,7 +45,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: antiquewhite;
+  background-color: var(--main-color);
 }
 
 body>div {
@@ -22,7 +55,7 @@ body>div {
 .game-display {
   width: 250px;
   height: 600px;
-  background-color: aqua;
+  background-color: var(--secondary-1-color);
 }
 .grid {
   width: 250px;
@@ -38,50 +71,62 @@ body>div {
   flex-direction: column;
   justify-content: space-evenly;
   align-items:center;
-  background-color: azure;
+  background-color: var(--secondary-1-color);
+}
+
+.game-control{
+  padding: 20px;
+}
+
+.game-control>a{
+  padding: 0px 10px;
 }
 
 .displays {
-  background-color: chartreuse;
-  padding: 20px;
+  padding: 10px 30px;
+  justify-content: start;
 }
 
 .instructions {
   background-color: gainsboro;
-  padding: 20px;
+  padding: 10px 30px;
 }
 
 .grid-item {
   width: 25px;
   height: 25px;
-  border: 1px solid black;
+  border: 1px solid #82B4ED;
 }
 
-.black {
-  background-color: black;
+.leader-board {
+  text-align: center;
+}
+
+.shape {
+  background-color: var(--secondary-2-color);
 }
 
 .dropped {
-  background-color: red;
+  background-color: var(--complement-color);
 }
 
 a.button1 {
   padding: 5px 20px;
   display:inline-block;
-  border:0.1em solid #000;
-  margin:0 0.3em 0.3em 0;
+  border:0.1em solid var(--secondary-2-color);
+  margin:0px 10px;
   border-radius:0.12em;
   box-sizing: border-box;
   text-decoration:none;
   font-family:'Roboto',sans-serif;
   font-weight:300;
-  color:#000;
+  color:var(--secondary-2-color);
   text-align:center;
   transition: all 0.2s;
 }
 a.button1:hover{
-  color:#FFF;
-  background-color: #000;
+  color:var(--secondary-1-color);
+  background-color: var(--main-color);
 }
 
 @media all and (max-width:30em){
