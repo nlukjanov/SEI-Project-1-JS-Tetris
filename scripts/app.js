@@ -66,7 +66,9 @@ function createGameBoard() {
   linesRemovedDisplay = document.querySelector('#lines')
   levelDisplay = document.querySelector('#level')
   const startBtn = document.querySelector('#startBtn')
+  const stopBtn = document.querySelector('#stopBtn')
   startBtn.addEventListener('click', handleStart)
+  stopBtn.addEventListener('click', handleStop)
   const grid = document.querySelector('.grid')
   gameMusic = document.querySelector('#gameMusic')
   gameFX = document.querySelector('#fx')
@@ -424,6 +426,7 @@ function handleStop() {
   clearInterval(timerId)
   window.removeEventListener('keydown', handleKeyDown)
   gameMusic.pause()
+  resetGame()
 }
 
 function resetGame() {
@@ -437,6 +440,7 @@ function resetGame() {
   boundaryIndexesToRemove = []
   clearInterval(timerId)
   squares.forEach(square => square.classList.remove('dropped'))
+  squares.forEach(square => square.classList.remove('black'))
   displayData()
 }
 
