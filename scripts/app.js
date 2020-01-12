@@ -39,7 +39,6 @@ let random = Math.floor(Math.random() * 7)
 let tetrominoShape = arrayOfShapes[random]
 
 //display variables
-let gameOverDisplay
 let scoreDisplay
 let linesRemovedDisplay
 let levelDisplay

@@ -130,6 +130,7 @@ h3 {
 }
 
 a.button1 {
+  cursor: pointer;
   padding: 5px 20px;
   display:inline-block;
   border: 0.1em solid var(--secondary-2-color);
