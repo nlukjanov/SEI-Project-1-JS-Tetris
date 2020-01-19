@@ -626,7 +626,7 @@ function handleKeyDown(e) {
     //down
     case 40:
       // if you press down you get score
-      score++
+      score = score + 1 * (level + 1)
       scoreDisplay.innerHTML = score
       moveDown()
       playFX('moveDown')
