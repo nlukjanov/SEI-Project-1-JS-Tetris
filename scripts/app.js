@@ -59,7 +59,6 @@ const musicSpeeds = {
 
 // create game board
 function createGameBoard() {
-  gameOverDisplay = document.querySelector('#gameOver')
   scoreDisplay = document.querySelector('#score')
   linesRemovedDisplay = document.querySelector('#lines')
   levelDisplay = document.querySelector('#level')
@@ -261,6 +260,8 @@ function droppedShape(currentIndexes) {
 }
 
 // checking boundaries for movement
+
+
 function checkLeftEdge(currentIndexes) {
   const bottomBoundaryIndexes = [...new Set(bottomBoundaryArray.flat())]
   const leftEdge = currentIndexes.filter(element => {
