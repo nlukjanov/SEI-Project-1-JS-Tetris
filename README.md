@@ -13,7 +13,7 @@
 * CSS3
 
 ### Deployment
-The app is deployed using github pages: [https://nlukjanov.github.io/sei-project-1/]()
+The app is deployed using github pages: [here](https://nlukjanov.github.io/sei-project-1/)
 
 ### Game features
 * Shapes rotate clockwise by pressing UP
@@ -28,9 +28,9 @@ The app is deployed using github pages: [https://nlukjanov.github.io/sei-project
 * The game is over if any cell of a shape reaches the top edge of the grid.
 * After the game is over you are prompted to enter your name.
 * Your name and score will be recorded in the local storage until cleared.
-### Game logic
 
 
+### Approach
 
 #### Grid
 
@@ -267,4 +267,4 @@ I didn't spend much time on design as I was more interested in adding as much te
 
 ### Key learnings
 
-I am happy with the technical features of the project and it was very good lesson to plan in advance before coding. Not to freeze in front of the blank page and just starting writing down step by step instruction for myself. It was interesting to see how it started as linear step by step process, but as I have been adding code I had to go back to previous functions and add some logic there for everything to work properly. Also it was nice to see how much can be done in one week.
+I am happy with the technical features of the project and it was very good lesson to plan in advance before coding, not to freeze in front of the blank page and just start writing down step by step instruction for myself. It was interesting to see how it started as linear step by step process, but as I have been adding code I had to go back to previous functions and add some logic there for everything to work properly. Also it was nice to see how much can be done in one week.
