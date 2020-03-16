@@ -13,7 +13,7 @@
 * CSS3
 
 ### Deployment
-The app is deployed using github pages: [here](https://nlukjanov.github.io/sei-project-1/)
+The app is deployed using heroku: [here](http://bit.ly/nl-sei1-live)
 
 ### Game features
 * Shapes rotate clockwise by pressing UP
