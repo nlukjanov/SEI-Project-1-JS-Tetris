@@ -13,7 +13,7 @@
 * CSS3
 
 ### Deployment
-The app is deployed using heroku: [here](http://bit.ly/nl-sei1-live)
+The app is deployed using heroku: [here](http://bit.ly/nl-sei1-heroku)
 
 ### Game features
 * Shapes rotate clockwise by pressing UP
