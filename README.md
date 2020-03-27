@@ -238,6 +238,9 @@ To run audio I use to audio tags, one for music that has to play all the time an
 #### Design
 I didn't spend much time on design as I was more interested in adding as much technical features as I could. I just used color palette design website to pick some bright matching colors and aligned the blocks.
 
+![Screenshot of the App](readme-images/tetris1.png)
+![Screenshot of the App](readme-images/tetris2.png)
+
 ### Wins
 * It Works! 
 * Built fully functional game with all the main features and some extra.
